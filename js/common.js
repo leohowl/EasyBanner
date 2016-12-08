@@ -29,7 +29,11 @@
         this.easing = opts.easing || '';
         this.initLeft = 0;//img position
         this.initTop = 0;
-        this.t_autoClick = null;//自动轮播定时器
+        var t_autoClick = null;//自动轮播定时器
+        this.beforeActionCallback = opts.beforeActionCallback || function(){};
+        this.afterActionCallback = opts.afterActionCallback || function(){};
+        this.delayBefore = opts.delayBefore || 0;
+        this.delayAfter = opts.delayAfter || 0;
         this.arrow = (opts.leftArrow&&opts.rightArrow) ? true : false;
         this.btn = opts.btn || false;
         this.smallImg = opts.smallImg || false;
@@ -53,8 +57,8 @@
                 left: 0,
                 top: 0,
             });
-            this.img.removeClass('active');
-            this.img.eq(0).addClass('active');
+            this.img.removeClass('EasyBannerActive');
+            this.img.eq(0).addClass('EasyBannerActive');
             //special init
             switch(this.method){
                 case "fade":
@@ -76,7 +80,7 @@
                 this.slidePositionInit();
             });
             if(this.mode == 'auto'){
-                this.main(this);
+                t_autoClick = setTimeout(this.next,this.interval);
             }
             
         },
@@ -124,83 +128,157 @@
                 top: 0,
             });
         },
-        main : function(easybanner){
-            //运动
-            var action = {
-                fade : function(targetIndex, callback, delay){
-                    var callback = callback || function(){};
-                    var delay = delay || 0;
-                    var currentIndex = easybanner.curImg;
-                    easybanner.img.eq(targetIndex).fadeIn(easybanner.speed,function(){
-                        //自定义回调函数
-                        easybanner.callback(callback,0);
-                        //调用插件
-                        easybanner.plugin('after');
-                        //设置请求标志位允许
-                        easybanner.actionAble = true;
-                        //动画完成，设置图片指针
-                        easybanner.preImg = easybanner.curImg;
-                        easybanner.curImg = targetIndex;
-                    });
-                    //设置active
-                    easybanner.img.removeClass('active');
-                    easybanner.img.eq(targetIndex).addClass('active');
-                    easybanner.img.eq(easybanner.curImg).fadeOut(easybanner.speed);
-                    easybanner.t_autoClick = setTimeout(function(){change.next();},easybanner.interval)
-
-                },
-                slide : function(targetIndex,callback){
-                    var callback = callback || function(){};
-                    var delay = delay || 0;
-                },
-            };
-            var change = {
-                actionChange : function(opts){
-                    //响应操作请求
-                    if(!easybanner.actionAble){
-                        return;
-                    }
-                    //参数处理
-                    var targetIndex = opts.targetIndex;
-                    var beforeActionCallback = opts.beforeActionCallback || function(){};
-                    var afterActionCallback = opts.afterActionCallback || function(){};
-                    var delayBefore = opts.delayBefore || 0;
-                    var delayAfter = opts.delayAfter || 0;
-                    //设置请求标志位为不允许
-                    easybanner.actionAble = false;
-                    //清除定时器
-                    clearTimeout(easybanner.t_autoClick);
-                    //执行前调用
-                    easybanner.callback(beforeActionCallback, delayBefore);
-                    //调用插件
-                    easybanner.plugin('before');
-                    //选择动作方法
-                    switch (easybanner.method){
-                        case 'fade':
-                        action.fade(targetIndex, afterActionCallback, delayAfter);
-                        break;
-                        case 'slide':
-                        action.slide(targetIndex, afterActionCallback, delayAfter);
-                    }
-                },
-                next : function(){
-                    change.actionChange({
-                        targetIndex : (easybanner.curImg + 1) % easybanner.imgNum,
-                    });
-                },
-                prev : function(){
-                    change.actionChange({
-                        targetIndex : (easybanner.curImg - 1 + easybanner.imgNum) % easybanner.imgNum,
-                    });
-                },
-                jump : function(index){
-                    change.actionChange({
-                        targetIndex : index,
-                    });
-                },
+        action : function(targetIndex){
+            var currentIndex = this.curImg;
+            //设置banner的active
+            this.img.removeClass('EasyBannerActive');
+            this.img.eq(targetIndex).addClass('EasyBannerActive');
+            switch (this.method){
+                case "fade":
+                fade(this);
+                break;
+                case "slide":
+                slide(this);
+                break;
             }
-            var t_firstChange = setTimeout(function(){change.next();},easybanner.interval);
+            
+            t_autoClick = setTimeout(this.next,this.interval);
+            var i = 1;
+            function fade(eb){
+                eb.img.eq(eb.curImg).fadeOut(eb.speed);
+                eb.img.eq(targetIndex).fadeIn(eb.speed,function(){
+                    //自定义回调函数
+                    eb.callback(eb.afterActionCallback,eb.delayAfter);
+                    //调用插件
+                    eb.plugin('after');
+                    //设置请求标志位允许
+                    eb.actionAble = true;
+                    //动画完成，设置图片指针
+                    eb.preImg = eb.curImg;
+                    eb.curImg = targetIndex;
+                });
+
+            }
+            function slide(eb){
+
+            }
         },
+        changeAction : function(opts){
+            //响应请求
+            if(!this.actionAble){
+                return;
+            }
+            //参数处理
+            var targetIndex = opts.targetIndex;
+            //设置请求标志位为不允许
+            this.actionAble = false;
+            //清除开始进行轮播后产生定时器
+            clearTimeout(t_autoClick);
+            //执行前执行回调函数
+            this.callback(this.beforeActionCallback, this.delayBefore);
+            //调用插件
+            this.plugin('before');
+            //选择动作方法
+            switch (this.method){
+                case 'fade':
+                this.action(targetIndex);
+                break;
+                case 'slide':
+                this.action(targetIndex);
+            }
+        },
+        next : function(){
+            this.changeAction({
+                targetIndex : (this.curImg + 1) % this.imgNum,
+            });
+        },
+        prev : function(){
+            this.changeAction({
+                targetIndex : (this.curImg - 1 + this.imgNum) % this.imgNum,
+            });
+        },
+        jump : function(index){
+            this.changeAction({
+                targetIndex : index,
+            });
+        },
+        // main : function(easybanner){
+        //     //运动
+        //     var action = {
+        //         fade : function(targetIndex, callback, delay){
+        //             var callback = callback || function(){};
+        //             var delay = delay || 0;
+        //             var currentIndex = easybanner.curImg;
+        //             easybanner.img.eq(targetIndex).fadeIn(easybanner.speed,function(){
+        //                 //自定义回调函数
+        //                 easybanner.callback(callback,0);
+        //                 //调用插件
+        //                 easybanner.plugin('after');
+        //                 //设置请求标志位允许
+        //                 easybanner.actionAble = true;
+        //                 //动画完成，设置图片指针
+        //                 easybanner.preImg = easybanner.curImg;
+        //                 easybanner.curImg = targetIndex;
+        //             });
+        //             //设置active
+        //             easybanner.img.removeClass('active');
+        //             easybanner.img.eq(targetIndex).addClass('active');
+        //             easybanner.img.eq(easybanner.curImg).fadeOut(easybanner.speed);
+        //             easybanner.t_autoClick = setTimeout(function(){change.next();},easybanner.interval)
+
+        //         },
+        //         slide : function(targetIndex,callback){
+        //             var callback = callback || function(){};
+        //             var delay = delay || 0;
+        //         },
+        //     };
+        //     var change = {
+        //         actionChange : function(opts){
+        //             //响应操作请求
+        //             if(!easybanner.actionAble){
+        //                 return;
+        //             }
+        //             //参数处理
+        //             var targetIndex = opts.targetIndex;
+        //             var beforeActionCallback = opts.beforeActionCallback || function(){};
+        //             var afterActionCallback = opts.afterActionCallback || function(){};
+        //             var delayBefore = opts.delayBefore || 0;
+        //             var delayAfter = opts.delayAfter || 0;
+        //             //设置请求标志位为不允许
+        //             easybanner.actionAble = false;
+        //             //清除定时器
+        //             clearTimeout(this.t_autoClick);
+        //             //执行前调用
+        //             this.callback(beforeActionCallback, delayBefore);
+        //             //调用插件
+        //             this.plugin('before');
+        //             //选择动作方法
+        //             switch (easybanner.method){
+        //                 case 'fade':
+        //                 action.fade(targetIndex, afterActionCallback, delayAfter);
+        //                 break;
+        //                 case 'slide':
+        //                 action.slide(targetIndex, afterActionCallback, delayAfter);
+        //             }
+        //         },
+        //         next : function(){
+        //             change.actionChange({
+        //                 targetIndex : (easybanner.curImg + 1) % easybanner.imgNum,
+        //             });
+        //         },
+        //         prev : function(){
+        //             change.actionChange({
+        //                 targetIndex : (easybanner.curImg - 1 + easybanner.imgNum) % easybanner.imgNum,
+        //             });
+        //         },
+        //         jump : function(index){
+        //             change.actionChange({
+        //                 targetIndex : index,
+        //             });
+        //         },
+        //     }
+        //     var t_firstChange = setTimeout(function(){change.next();},easybanner.interval);
+        // },
         plugin : function(type){
 
         },
@@ -214,6 +292,5 @@
             }
         },
     }
-
     window.EasyBanner = window.EB = EasyBanner;
 })(window);
