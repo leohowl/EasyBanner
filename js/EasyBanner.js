@@ -210,9 +210,9 @@
             function slide(eb){
                 eb.img.eq(eb.curImg).css('z-index', '100');
                 eb.img.eq(eb.curImg).animate({
-                    left: -eb.initLeft,
-                    top: -eb.initTop},
-                    eb.speed,eb.easing,function(){
+                    left: -eb.initLeft*eb.displacement,
+                    top: -eb.initTop*eb.displacement,
+                },eb.speed,eb.easing,function(){
                         //退场图片样式
                         $(this).css({
                             left: eb.initLeft,
