@@ -24,6 +24,7 @@
         this.displacement = opts.displacement || 0;
         this.preImg = 0;//index of previous  image
         this.curImg = 0;//index of current image
+        this.targetIndex = 0;
         this.actionAble = true;//enable change image
         this.wrapWidth = this.wrap.width();
         this.wrapHeight = this.wrap.height();
@@ -81,17 +82,17 @@
                 break;
             }
             //bind
+            var eb = this;
             $(window).resize(function(event) {
-                this.wrapWidth = this.wrap.width();
-                this.wrapHeight = this.wrap.height();
+                eb.wrapWidth = eb.wrap.width();
+                eb.wrapHeight = eb.wrap.height();
                 //slide position init
-                this.slidePositionInit();
+                eb.slidePositionInit();
             });
             //插件初始化
             this.pluginInit();
             if(this.mode == 'auto'){
                 //当前为自动；轮播模式
-                var eb = this;
                 this.t_autoClick = setTimeout(function(){eb.next();},this.interval);
             }
             
@@ -245,6 +246,8 @@
             }
             //参数处理
             var targetIndex = opts.targetIndex;
+            //方便外部引用
+            this.targetIndex = targetIndex;
             //设置请求标志位为不允许
             this.actionAble = false;
             //清除开始进行轮播后产生定时器

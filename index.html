@@ -40,6 +40,18 @@
         direction:'top',
         btn:'.btna1',
         mode : 'passive',//开启被动模式后，被控制,将不会初始化点击事件
+        afterActionCallback:function(){
+            //作用域即为当前实例的作用域
+            //after的回调时间点是在动画操作结束后，
+            //当前图片指针变化之前，图片指针仍在上一张退场图片上
+            console.log('curImg:' + banner2.curImg);
+        },
+        delayAfter:0,
+        beforeActionCallback:function(){
+            console.log("targetIndex:" + banner2.targetIndex);
+        },
+        beforeAfter:0,
+
     });
     var banner1 = new EasyBanner({
         wrap:'#main',
