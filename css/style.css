@@ -47,3 +47,29 @@ a:visited{ color: #bcbcbc; }
 .btn1.EasyBannerBtnActive,.btna1.EasyBannerBtnActive{
     background: #000;
 }
+.prev{
+    display: inline-block;
+    padding: 5px 15px;
+    background: rgba(0,0,0,0.5);
+    position: absolute;
+    color: #fff;
+    font-size: 18px;
+    cursor: pointer;
+    border-radius: 3px;
+    left: 10px;
+    top: 150px;
+    z-index: 999;
+}
+.next{
+    display: inline-block;
+    padding: 5px 15px;
+    background: rgba(0,0,0,0.5);
+    position: absolute;
+    right: 10px;
+    color: #fff;
+    font-size: 18px;
+    cursor: pointer;
+    border-radius: 3px;
+    top: 150px;
+    z-index: 999;
+}
