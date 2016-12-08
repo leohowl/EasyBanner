@@ -53,6 +53,8 @@
                 left: 0,
                 top: 0,
             });
+            this.img.removeClass('active');
+            this.img.eq(0).addClass('active');
             //special init
             switch(this.method){
                 case "fade":
@@ -140,6 +142,9 @@
                         easybanner.preImg = easybanner.curImg;
                         easybanner.curImg = targetIndex;
                     });
+                    //设置active
+                    easybanner.img.removeClass('active');
+                    easybanner.img.eq(targetIndex).addClass('active');
                     easybanner.img.eq(easybanner.curImg).fadeOut(easybanner.speed);
                     easybanner.t_autoClick = setTimeout(function(){change.next();},easybanner.interval)
 
