@@ -63,37 +63,7 @@
             delay : 0,//执行延时
         }],//被作为控制机使用,在作为控制机使用的时候需要在从机的下方，因为在上方的时候从机还没有定义，会出现未定义错误
         waterMark:true,
-    });
-    var banner = new EasyBanner({
-        wrap:'#main1',//轮播图容器
-        img:'main',//轮播图元素
-        btn:'btn1',//焦点按钮
-        leftArrow:'.prev';//翻页按钮上一页
-        rightArrow:'.next';//翻页按钮下一页，rightArrow，leftArrow同时设置是才能生效
-        speed:1000，//轮播图片切换速度，单位：ms
-        interval:6000,//轮播图片切换间隔
-        method:'fade|slide',//图片切换方法，目前有淡入和滑入两种方式
-        direction:'right|left|top|bottom',//入场方式，只对slide方式有效
-        displacement:1;//切换时退场图片的相对位移比例，只对slide方式有效
-        easing:'linear';//图片切换的缓动效果。
-        beforeActionCallback:function(){
-            //do something
-        },//轮播动画开始前回调函数
-        delayBefore:1000,//轮播动画开始前回调延时
-        afterActionCallback:function(){
-            //do something
-        },//轮播动画结束后回调函数
-        delayAfter:1000,//轮播动画结束后回调延时
-        smallImg:true,//开启缩略图
-        timeLine:true,//开启时间线
-        control:[{
-            object: banner2,//控制对象
-            delay : 0,//执行延时
-        }],//被作为控制机使用,在作为控制机使用的时候需要在从机的下方，因为在上方的时候从机还没有定义，会出现未定义错误
-        mode : 'passive',//被动模式
-
-    });
-    
+    });  
     //dev
 </script>
 </body>
