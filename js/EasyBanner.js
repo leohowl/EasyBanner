@@ -38,7 +38,7 @@
         this.delayAfter = opts.delayAfter || 0;
         this.leftArrow = opts.leftArrow || false;
         this.rightArrow = opts.rightArrow || false;
-        this.arrow = (opts.leftArrow&&opts.rightArrow) ? true : false;
+        this.arrow = !!(opts.leftArrow && opts.rightArrow);
         this.btn = opts.btn || false;
         this.smallImg = opts.smallImg || false;
         this.timeLine = opts.timeLine || false;
@@ -59,12 +59,12 @@
             //normal init
             this.wrap.css({
                 position: 'relative',
-                overflow: 'hidden',
+                overflow: 'hidden'
             });
             this.img.css({//default init
                 position : 'absolute',
                 left: 0,
-                top: 0,
+                top: 0
             });
             this.img.removeClass('EasyBannerActive');
             this.img.eq(0).addClass('EasyBannerActive');
@@ -125,7 +125,7 @@
                 $(this).css({
                     left: eb.initLeft+'px',
                     top: eb.initTop+'px',
-                    'z-index' : 101,
+                    'z-index' : 101
                 });
             });
             //初次位置初始化检查
@@ -133,14 +133,13 @@
             this.img.each(function(index, el) {
                 if($(this).hasClass('EasyBannerActive')){
                     activeIndex = index;
-                    return;
                 }
             });
-            console.log(activeIndex)
+            console.log(activeIndex);
             this.img.eq(activeIndex).css({
                 'z-index': 100,
                 left: 0,
-                top: 0,
+                top: 0
             });
         },
         pluginInit : function(){
@@ -197,8 +196,8 @@
                     //调用插件
                     var pluginOpts = {
                         type : 'after',
-                        targetIndex : targetIndex,
-                    }
+                        targetIndex : targetIndex
+                    };
                     eb.plugin(pluginOpts);
                     //设置请求标志位允许
                     eb.actionAble = true;
@@ -212,21 +211,21 @@
                 eb.img.eq(eb.curImg).css('z-index', '100');
                 eb.img.eq(eb.curImg).animate({
                     left: -eb.initLeft*eb.displacement,
-                    top: -eb.initTop*eb.displacement,
+                    top: -eb.initTop*eb.displacement
                 },eb.speed,eb.easing,function(){
                         //退场图片样式
                         $(this).css({
                             left: eb.initLeft,
                             top: eb.initTop,
-                            'z-index':101,
+                            'z-index':101
                         });
                         //自定义回调函数
                         eb.callback(eb.afterActionCallback,eb.delayAfter);
                         //调用插件
                         var pluginOpts = {
                             type : 'after',
-                            targetIndex : targetIndex,
-                        }
+                            targetIndex : targetIndex
+                        };
                         eb.plugin(pluginOpts);
                         //设置请求标志位允许
                         eb.actionAble = true;
@@ -266,8 +265,8 @@
             //调用插件
             var pluginOpts = {
                 type : 'before',
-                targetIndex : targetIndex,
-            }
+                targetIndex : targetIndex
+            };
             this.plugin(pluginOpts);
             //选择动作方法
             switch (this.method){
@@ -282,7 +281,7 @@
             //被动模式中，亦不可通过调用方法翻页
             if(this.mode != 'passive'){
                 this.changeAction({
-                    targetIndex : (this.curImg + 1) % this.imgNum,
+                    targetIndex : (this.curImg + 1) % this.imgNum
                 });
             }
             
@@ -290,7 +289,7 @@
         prev : function(){
             if(this.mode != 'passive'){
                 this.changeAction({
-                    targetIndex : (this.curImg - 1 + this.imgNum) % this.imgNum,
+                    targetIndex : (this.curImg - 1 + this.imgNum) % this.imgNum
                 });
             } 
         },
@@ -301,7 +300,7 @@
                 return;
             }
             this.changeAction({
-                targetIndex : index,
+                targetIndex : index
             });
         },
         showDesign : function(){
@@ -323,9 +322,10 @@
         callback : function(c,delay){
             var delay = delay || 0;
             if( typeof c == 'function'){
-                var t_callback = setTimeout(c(),delay);
+                var t_callback = setTimeout(function(){c();},delay);
             }
-        },
-    }
-    window.EasyBanner = window.EB = EasyBanner;
+        }
+    };
+    window.EB = EasyBanner;
+    window.EasyBanner = window.EB;
 })(window);
