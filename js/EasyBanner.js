@@ -9,7 +9,6 @@
     // var EasyBanner = window.EasyBanner;
 
     function EasyBanner(opts){
-
         this.viewWidth = $(window).width();
         this.viewWidth = $(window).width();
         this.wrap = $(opts.wrap) ||  null;//father wrap
@@ -45,12 +44,12 @@
         //杂项
         this.waterMark = opts.waterMark || false;
         this.init();//initialize
-        
+
     }
 
     EasyBanner.prototype = {
         constructor : EasyBanner,
-        
+
         init : function(){
             //show Author
             if(this.waterMark){
@@ -71,15 +70,15 @@
             //special init
             switch(this.method){
                 case "fade":
-                this.img.hide();
-                this.img.eq(0).show();
-                break;
+                    this.img.hide();
+                    this.img.eq(0).show();
+                    break;
                 case "slide":
-                //also execute with $(window).resize
-                this.slidePositionInit();
-                break;
+                    //also execute with $(window).resize
+                    this.slidePositionInit();
+                    break;
                 default:
-                break;
+                    break;
             }
             //bind
             var eb = this;
@@ -95,7 +94,7 @@
                 //当前为自动；轮播模式
                 this.t_autoClick = setTimeout(function(){eb.next();},this.interval);
             }
-            
+
         },
         slidePositionInit : function(){
             //set origin position
@@ -104,21 +103,21 @@
             }
             switch(this.direction){
                 case "right":
-                this.initLeft = this.wrapWidth;
-                this.initTop = 0;
-                break;
+                    this.initLeft = this.wrapWidth;
+                    this.initTop = 0;
+                    break;
                 case "left":
-                this.initLeft = -this.wrapWidth;
-                this.initTop = 0;
-                break;
+                    this.initLeft = -this.wrapWidth;
+                    this.initTop = 0;
+                    break;
                 case "top":
-                this.initLeft = 0;
-                this.initTop = -this.wrapHeight;
-                break;
+                    this.initLeft = 0;
+                    this.initTop = -this.wrapHeight;
+                    break;
                 case "bottom":
-                this.initLeft = 0;
-                this.initTop = this.wrapHeight;
-                break;
+                    this.initLeft = 0;
+                    this.initTop = this.wrapHeight;
+                    break;
             }
             var eb = this;
             this.img.each(function(index, el) {
@@ -133,9 +132,10 @@
             this.img.each(function(index, el) {
                 if($(this).hasClass('EasyBannerActive')){
                     activeIndex = index;
+                    return null;
                 }
             });
-            console.log(activeIndex);
+            // console.log(activeIndex);
             this.img.eq(activeIndex).css({
                 'z-index': 100,
                 left: 0,
@@ -175,18 +175,18 @@
             this.img.eq(targetIndex).addClass('EasyBannerActive');
             switch (this.method){
                 case "fade":
-                fade(this);
-                break;
+                    fade(this);
+                    break;
                 case "slide":
-                slide(this);
-                break;
+                    slide(this);
+                    break;
             }
             if(this.mode == 'auto'){
                 //如果当前为自动模式，则自动切换
                 var eb = this;
                 this.t_autoClick = setTimeout(function(){eb.next();},this.interval);
             }
-            
+
             var i = 1;
             function fade(eb){
                 eb.img.eq(eb.curImg).fadeOut(eb.speed);
@@ -213,26 +213,26 @@
                     left: -eb.initLeft*eb.displacement,
                     top: -eb.initTop*eb.displacement
                 },eb.speed,eb.easing,function(){
-                        //退场图片样式
-                        $(this).css({
-                            left: eb.initLeft,
-                            top: eb.initTop,
-                            'z-index':101
-                        });
-                        //自定义回调函数
-                        eb.callback(eb.afterActionCallback,eb.delayAfter);
-                        //调用插件
-                        var pluginOpts = {
-                            type : 'after',
-                            targetIndex : targetIndex
-                        };
-                        eb.plugin(pluginOpts);
-                        //设置请求标志位允许
-                        eb.actionAble = true;
-                        //动画完成，设置图片指针
-                        eb.preImg = eb.curImg;
-                        eb.curImg = targetIndex;
+                    //退场图片样式
+                    $(this).css({
+                        left: eb.initLeft,
+                        top: eb.initTop,
+                        'z-index':101
                     });
+                    //自定义回调函数
+                    eb.callback(eb.afterActionCallback,eb.delayAfter);
+                    //调用插件
+                    var pluginOpts = {
+                        type : 'after',
+                        targetIndex : targetIndex
+                    };
+                    eb.plugin(pluginOpts);
+                    //设置请求标志位允许
+                    eb.actionAble = true;
+                    //动画完成，设置图片指针
+                    eb.preImg = eb.curImg;
+                    eb.curImg = targetIndex;
+                });
                 eb.img.eq(targetIndex).animate({
                     left: 0,
                     top: 0}, eb.speed, eb.easing);
@@ -250,7 +250,7 @@
             //设置请求标志位为不允许
             this.actionAble = false;
             //清除开始进行轮播后产生定时器
-            if(this.t_autoClick){ clearTimeout(this.t_autoClick); }     
+            if(this.t_autoClick){ clearTimeout(this.t_autoClick); }
             //如果开启控制模式，这可以控制其他轮播
             if(this.control){
                 var i;
@@ -259,7 +259,7 @@
                     var delay = this.control[0].delay;
                     var t_mode = setTimeout(function(){obj.jump(targetIndex,'control');},delay);//control 表示是由控制机控制
                 }
-            }       
+            }
             //执行前执行回调函数
             this.callback(this.beforeActionCallback, this.delayBefore);
             //调用插件
@@ -271,10 +271,10 @@
             //选择动作方法
             switch (this.method){
                 case 'fade':
-                this.action(targetIndex);
-                break;
+                    this.action(targetIndex);
+                    break;
                 case 'slide':
-                this.action(targetIndex);
+                    this.action(targetIndex);
             }
         },
         next : function(){
@@ -284,14 +284,14 @@
                     targetIndex : (this.curImg + 1) % this.imgNum
                 });
             }
-            
+
         },
         prev : function(){
             if(this.mode != 'passive'){
                 this.changeAction({
                     targetIndex : (this.curImg - 1 + this.imgNum) % this.imgNum
                 });
-            } 
+            }
         },
         jump : function(index,type){
             //type的类型：click来自鼠标点击，control来自控制机
@@ -302,10 +302,6 @@
             this.changeAction({
                 targetIndex : index
             });
-        },
-        showDesign : function(){
-            console.info("%cDesign by HANSN","padding:5px 10px; border-radius:3px; border:#ccc 1px solid; line-height:60px; background:#eee; display:inline-block; color:#000;font-size:25px; font-family:'microsoft yahei light';");
-            console.info("%cwww.hansn.cn / e-mail:it@hansn.cn","color:#009cad;font-size:16px; font-family:'microsoft yahei light';");
         },
         plugin : function(opts){
             if(opts.type == 'before'){
@@ -322,7 +318,10 @@
         callback : function(c,delay){
             var delay = delay || 0;
             if( typeof c == 'function'){
-                var t_callback = setTimeout(function(){c();},delay);
+                var t_callback = setTimeout(function () {
+                    c();
+                },delay);
+                // console.log("callback");
             }
         }
     };
