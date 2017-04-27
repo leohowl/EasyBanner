@@ -23,18 +23,18 @@ a:visited{ color: #bcbcbc; }
     -webkit-text-stroke-width: 0.2px;
     -moz-osx-font-smoothing: grayscale;}
 
-#main,#maina{ width: 800px; height: 300px; margin: 50px auto 0; position: relative; overflow: hidden; }
-.main,.maina{ width: 800px; height: 300px; position: absolute; top: 0;left: 0; }
-#main1,#maina1{ background: url('../image/1.jpg') no-repeat; background-size: cover; }
-#main2,#maina2{ background: url('../image/2.jpg') no-repeat; background-size: cover; }
-#main3,#maina3{ background: url('../image/3.jpg') no-repeat; background-size: cover; }
-.mainBtn1,.mainBtna1{
+#main,#maina,#mainb{ width: 800px; height: 300px; margin: 50px auto 0; position: relative; overflow: hidden; }
+.main,.maina,.mainb{ width: 800px; height: 300px; position: absolute; top: 0;left: 0; }
+#main1,#maina1,#mainb1{ background: url('../image/1.jpg') no-repeat; background-size: cover; }
+#main2,#maina2,#mainb2{ background: url('../image/2.jpg') no-repeat; background-size: cover; }
+#main3,#maina3,#mainb3{ background: url('../image/3.jpg') no-repeat; background-size: cover; }
+.mainBtn1,.mainBtna1,.mainBtnb1{
     width: 200px;
     text-align: center;
 
     margin: 20px auto 0;
 }
-.btn1,.btna1{
+.btn1,.btna1,.btnb1{
     width: 15px;
     height: 15px;
     background: #ccc;
@@ -44,7 +44,7 @@ a:visited{ color: #bcbcbc; }
     margin: 0 20px;
     transition: background 0.5s;
 }
-.btn1.EasyBannerBtnActive,.btna1.EasyBannerBtnActive{
+.btn1.EasyBannerBtnActive,.btna1.EasyBannerBtnActive,.btnb1.EasyBannerBtnActive{
     background: #000;
 }
 .prev{

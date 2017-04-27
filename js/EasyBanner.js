@@ -53,7 +53,7 @@
         init : function(){
             //show Author
             if(this.waterMark){
-                this.showDesign();
+                // this.showDesign();
             }
             //normal init
             this.wrap.css({
@@ -67,6 +67,7 @@
             });
             this.img.removeClass('EasyBannerActive');
             this.img.eq(0).addClass('EasyBannerActive');
+            //移动端时间初始化
             //special init
             switch(this.method){
                 case "fade":
@@ -88,7 +89,7 @@
                 //slide position init
                 eb.slidePositionInit();
             });
-            //插件初始化
+            //扩展初始化
             this.pluginInit();
             if(this.mode == 'auto'){
                 //当前为自动；轮播模式
@@ -143,17 +144,21 @@
             });
         },
         pluginInit : function(){
-            //被动模式下将不会初始化焦点和翻页
-            //焦点初始化
+            /**
+             * 焦点初始化，在被动模式下，不会初始化翻页，不会为按钮绑定点击事件
+             * @type {EasyBanner}
+             */
             var eb = this;
-            if(this.btn && this.mode != 'passive'){
-                //
+            if(this.btn){
                 $(this.btn).removeClass('EasyBannerBtnActive');
                 $(this.btn).eq(0).addClass('EasyBannerBtnActive');
-                $(this.btn).on('click',function(){
-                    var index = $(this).index();
-                    eb.jump(index,'click');
-                });
+                //如果不是被动模式则为按钮绑定点击事件
+                if(this.mode != "passive"){
+                    $(this.btn).on('click',function(){
+                        var index = $(this).index();
+                        eb.jump(index,'click');
+                    });
+                }
             }
             //翻页按钮初始化
             if(this.arrow && this.mode != 'passive'){
@@ -239,25 +244,34 @@
             }
         },
         changeAction : function(opts){
+            //
+            var eb = this;
             //响应请求
             if(!this.actionAble){
                 return;
             }
             //参数处理
             var targetIndex = opts.targetIndex;
-            //方便外部引用
+
+            //暴露切换的目标图片，方便外部引用
             this.targetIndex = targetIndex;
+
             //设置请求标志位为不允许
             this.actionAble = false;
+
             //清除开始进行轮播后产生定时器
             if(this.t_autoClick){ clearTimeout(this.t_autoClick); }
+
             //如果开启控制模式，这可以控制其他轮播
             if(this.control){
                 var i;
                 for(i = 0; i < this.control.length; i++){
-                    var obj = this.control[0].object;
-                    var delay = this.control[0].delay;
-                    var t_mode = setTimeout(function(){obj.jump(targetIndex,'control');},delay);//control 表示是由控制机控制
+                    var run = function(i){
+                        var obj = eb.control[i].object;
+                        var delay = eb.control[i].delay;
+                        var t_mode = setTimeout(function(){obj.jump(targetIndex,'control');},delay);//control 表示是由控制机控制
+                    };
+                    run(i);
                 }
             }
             //执行前执行回调函数
@@ -277,6 +291,10 @@
                     this.action(targetIndex);
             }
         },
+
+        /**
+         * 下一张，使当前的curImg增加1，然后调用图片切换
+         */
         next : function(){
             //被动模式中，亦不可通过调用方法翻页
             if(this.mode != 'passive'){
@@ -286,6 +304,9 @@
             }
 
         },
+        /**
+         * 上一张，使当前的curImg减少1，然后调用图片切换
+         */
         prev : function(){
             if(this.mode != 'passive'){
                 this.changeAction({
@@ -293,8 +314,14 @@
                 });
             }
         },
+
+        /**
+         *
+         * @param index 切换的目标图片
+         * @param type 当前控制模式
+         */
         jump : function(index,type){
-            //type的类型：click来自鼠标点击，control来自控制机
+            //type的类型：click来自鼠标点击，control来自控制机。
             if(type == 'control' && this.mode != 'passive'){
                 //表示当前为控制机操作，若没有启用被动模式则不执行，控制机误操作防止
                 return;

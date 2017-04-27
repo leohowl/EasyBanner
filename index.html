@@ -32,8 +32,29 @@
     <div class="btna1"></div>
     <div class="btna1"></div>
 </div>
+
+<div id="mainb">
+    <div class="main" id="mainb1"></div>
+    <div class="main" id="mainb2"></div>
+    <div class="main" id="mainb3"></div>
+    <div class="clear"></div>
+</div>
+<div class="mainBtnb1">
+    <div class="btnb1"></div>
+    <div class="btnb1"></div>
+    <div class="btnb1"></div>
+</div>
 <script type="text/javascript" src="js/EasyBanner.js"></script>
 <script type="text/javascript">
+    var banner3 = new EasyBanner({
+        wrap:'#mainb',
+        img:'.main',
+        method:'slide',
+        displacement:0.5,
+        direction:'left',
+        btn:'.btnb1',
+        mode : 'passive'//开启被动模式后，被控制,将不会初始化点击事件
+    });
     var banner2 = new EasyBanner({
         wrap:'#maina',
         img:'.main',
@@ -41,7 +62,7 @@
         displacement:0.5,
         direction:'right',
         btn:'.btna1',
-        mode : 'passive',//开启被动模式后，被控制,将不会初始化点击事件
+        mode : 'passive'//开启被动模式后，被控制,将不会初始化点击事件
     });
     var banner1 = new EasyBanner({
         wrap:'#main',
@@ -52,16 +73,12 @@
         rightArrow:'.next',
         control:[{
             object: banner2,//控制对象
-            delay : 100,//执行延时
+            delay : 100//执行延时
+        },{
+            object: banner3,//控制对象
+            delay : 100//执行延时
         }],//被作为控制机使用,在作为控制机使用的时候需要在从机的下方，因为在上方的时候从机还没有定义，会出现未定义错误
-        waterMark:true,
-<<<<<<< HEAD
-    });
-
-=======
-    });  
->>>>>>> 82d45a897451989a87db0b50ebb2cad4b9ae654d
-    //dev
+        waterMark:true});
 </script>
 </body>
 </html>
