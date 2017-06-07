@@ -253,6 +253,11 @@
             //参数处理
             var targetIndex = opts.targetIndex;
 
+            //若目标图片为当前图片，则忽略
+            if(this.curImg == targetIndex){
+                return;
+            }
+
             //暴露切换的目标图片，方便外部引用
             this.targetIndex = targetIndex;
 

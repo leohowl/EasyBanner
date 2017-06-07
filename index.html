@@ -59,9 +59,10 @@
         wrap:'#maina',
         img:'.main',
         method:'slide',
-        displacement:0.5,
+        displacement:1,
         direction:'right',
         btn:'.btna1',
+        easing:'easeInOutQuint',
         mode : 'passive'//开启被动模式后，被控制,将不会初始化点击事件
     });
     var banner1 = new EasyBanner({
@@ -70,10 +71,11 @@
         btn:'.btn1',
         method:'fade',
         leftArrow:'.prev',
+        easing:'easeInOutBack',
         rightArrow:'.next',
         control:[{
             object: banner2,//控制对象
-            delay : 100//执行延时
+            delay : 500//执行延时
         },{
             object: banner3,//控制对象
             delay : 100//执行延时
