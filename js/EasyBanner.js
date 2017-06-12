@@ -9,40 +9,199 @@
     // var EasyBanner = window.EasyBanner;
 
     function EasyBanner(opts){
+        /**
+         *
+         * @param {viewWidth} 浏览器有效宽度
+         */
         this.viewWidth = $(window).width();
-        this.viewWidth = $(window).width();
-        this.wrap = $(opts.wrap) ||  null;//father wrap
-        this.img = this.wrap.find(opts.img) || null;//image wrap
-        this.imgNum = this.img.length;//image number
-        this.speed  = opts.speed || 1000;//banner change speed
+
+        /**
+         *
+         * @param {viewHeight} 浏览器有效高度
+         */
+        this.viewHeight = $(window).height();
+
+        /**
+         *
+         * @param {wrap} 父级容器
+         */
+        this.wrap = $(opts.wrap) ||  null;
+
+        /**
+         *
+         * @param {img} 子元素
+         * 子元素将从父级容器中查找，不必重复父级容器的选择器
+         *
+         */
+        this.img = this.wrap.find(opts.img) || null;
+
+        /**
+         * @param {imgNum} 子元素的图片
+         * 自动生成，无需手动添加
+         */
+        this.imgNum = this.img.length;
+
+        /**
+         *
+         * @param {speed} 子元素切换速度
+         */
+        this.speed  = opts.speed || 1000;
+
+        /**
+         *
+         * @param {interval} 子元素切换间隔
+         */
         this.interval = (opts.interval > this.speed + 500) ? opts.interval : 2000;
+
+        /**
+         *
+         * @param {mode} 切换模式
+         * 包括"auto","click","passive"
+         * auto模式下将自动切换
+         * click模式下，需要通过点击“焦点”或“上一张，下一张”按钮切换
+         * passive模式下，只能被其他实例控制
+         */
         this.mode = opts.mode || 'auto';
+
+        /**
+         *
+         * @param {control} 控制模式
+         * 实例开启此项时，将被作为控制机使用，控制其他mode为passive的实例
+         */
         this.control = opts.control || null;
+
+        /**
+         *
+         * @param {method} 切换风格
+         * fade为渐入渐出
+         * slide为滑动
+         */
         this.method = opts.method || 'fade';
-        this.direction = opts.direction || 'right';//the direction of enter
+
+        /**
+         *
+         * @param {direction} 切换方向
+         * 此项为method为“slide”的进一步配置，用于设置滑动方向
+         */
+        this.direction = opts.direction || 'right';
+
+        /**
+         *
+         * @param {displacement} slide切换的相对位移，取值范围为[0,1]
+         */
         this.displacement = opts.displacement || 0;
-        this.preImg = 0;//index of previous  image
-        this.curImg = 0;//index of current image
+
+        /**
+         *
+         * @param {preImg} 上一个显示的元素的index
+         */
+        this.preImg = 0;
+
+        /**
+         *
+         * @param {curImg} 当前显示的元素的index
+         */
+        this.curImg = 0;
+
+        /**
+         *
+         * @param {targetIndex} 目标显示的元素的index
+         */
         this.targetIndex = 0;
-        this.actionAble = true;//enable change image
+
+        /**
+         *
+         * @param {actionAble} 切换保护
+         */
+        this.actionAble = true;
+
+        /**
+         *
+         * @param {wrapWidth} 父级容器宽度
+         */
         this.wrapWidth = this.wrap.width();
+
+        /**
+         *
+         * @param {wrapHeight} 父级容器高度
+         */
         this.wrapHeight = this.wrap.height();
+
+        /**
+         *
+         * @param {easing} 缓动效果
+         */
         this.easing = opts.easing || '';
-        this.initLeft = 0;//img position
+
+        /**
+         *
+         * @param {initLeft} 子元素初始化位置信息
+         */
+        this.initLeft = 0;
+
+        /**
+         *
+         * @param {initLeft} 子元素初始化位置信息
+         */
         this.initTop = 0;
-        this.t_autoClick = null;//自动轮播定时器
+
+        /**
+         *
+         * @param {timer_autoClick} 自动轮播定时器
+         */
+        this.timer_autoClick = null;
+
+        /**
+         *
+         * @param {beforeActionCallback} 子元素切换前回调函数
+         */
         this.beforeActionCallback = opts.beforeActionCallback || function(){};
+
+        /**
+         *
+         * @param {afterActionCallback} 子元素切换后回调函数
+         */
         this.afterActionCallback = opts.afterActionCallback || function(){};
+
+        /**
+         *
+         * @param {delayBefore} 子元素切换前回调函数的执行延时
+         */
         this.delayBefore = opts.delayBefore || 0;
+
+        /**
+         *
+         * @param {delayAfter} 子元素切换后回调函数的执行延时
+         */
         this.delayAfter = opts.delayAfter || 0;
+
+        /**
+         *
+         * @param {leftArrow} ”上一张“切换按钮
+         */
         this.leftArrow = opts.leftArrow || false;
+
+        /**
+         *
+         * @param {rightArrow} ”下一张“切换按钮
+         */
         this.rightArrow = opts.rightArrow || false;
+
+        /**
+         *
+         * @param {arrow} 切换按钮设置完全验证
+         */
         this.arrow = !!(opts.leftArrow && opts.rightArrow);
+
+        /**
+         *
+         * @param {btn} 切换焦点
+         */
         this.btn = opts.btn || false;
-        this.smallImg = opts.smallImg || false;
-        this.timeLine = opts.timeLine || false;
+        // this.smallImg = opts.smallImg || false;
+        // this.timeLine = opts.timeLine || false;
         //杂项
-        this.waterMark = opts.waterMark || false;
+        // this.waterMark = opts.waterMark || false;
         this.init();//initialize
 
     }
@@ -93,7 +252,7 @@
             this.pluginInit();
             if(this.mode == 'auto'){
                 //当前为自动；轮播模式
-                this.t_autoClick = setTimeout(function(){eb.next();},this.interval);
+                this.timer_autoClick = setTimeout(function(){eb.next();},this.interval);
             }
 
         },
@@ -189,7 +348,7 @@
             if(this.mode == 'auto'){
                 //如果当前为自动模式，则自动切换
                 var eb = this;
-                this.t_autoClick = setTimeout(function(){eb.next();},this.interval);
+                this.timer_autoClick = setTimeout(function(){eb.next();},this.interval);
             }
 
             var i = 1;
@@ -265,7 +424,7 @@
             this.actionAble = false;
 
             //清除开始进行轮播后产生定时器
-            if(this.t_autoClick){ clearTimeout(this.t_autoClick); }
+            if(this.timer_autoClick){ clearTimeout(this.timer_autoClick); }
 
             //如果开启控制模式，这可以控制其他轮播
             if(this.control){
