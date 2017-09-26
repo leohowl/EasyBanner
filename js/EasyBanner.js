@@ -237,6 +237,10 @@
                     //also execute with $(window).resize
                     this.slidePositionInit();
                     break;
+                case "film":
+                    // film mode
+                    this.filmPositionInit();
+                    break;
                 default:
                     break;
             }
@@ -301,6 +305,19 @@
                 left: 0,
                 top: 0
             });
+        },
+        filmPositionInit: function(){
+            //film mode
+            if(this.method != 'film'){
+                console.error('error method');
+                return false;
+                var eb = this;
+                var activeIndex = 0;
+                //定位
+                for(var i = 0; i < this.img.length; i++){
+                    //初始化图片位置
+                }
+            }
         },
         pluginInit : function(){
             /**
