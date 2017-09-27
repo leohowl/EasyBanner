@@ -251,6 +251,7 @@
                 eb.wrapHeight = eb.wrap.height();
                 //slide position init
                 eb.slidePositionInit();
+                eb.filmPositionInit();
             });
             //扩展初始化
             this.pluginInit();
@@ -307,16 +308,23 @@
             });
         },
         filmPositionInit: function(){
+            // console.log('film');
             //film mode
             if(this.method != 'film'){
                 console.error('error method');
                 return false;
-                var eb = this;
-                var activeIndex = 0;
-                //定位
-                for(var i = 0; i < this.img.length; i++){
-                    //初始化图片位置
-                }
+            }
+            var eb = this;
+            var activeIndex = 0;
+            //定位
+
+            for(var i = 0; i < this.img.length; i++){
+                //初始化图片位置
+                this.img.eq(i).css({
+                    left:(eb.wrapWidth*(i - activeIndex))+'px',
+                    top:0,
+                    'z-index':101
+                })
             }
         },
         pluginInit : function(){
@@ -360,6 +368,9 @@
                     break;
                 case "slide":
                     slide(this);
+                    break;
+                case 'film':
+                    film(this);
                     break;
             }
             if(this.mode == 'auto'){
@@ -416,7 +427,32 @@
                 });
                 eb.img.eq(targetIndex).animate({
                     left: 0,
-                    top: 0}, eb.speed, eb.easing);
+                    top: 0}, eb.speed, eb.easing
+                );
+            }
+            function film(eb){
+
+                eb.img.each(function(index){
+                    eb.img.eq(index).animate({
+                        left: (index - targetIndex)*eb.wrapWidth + 'px'
+                    }, eb.speed, eb.easing, function(){
+                        if(index == eb.imgNum - 1){
+                            //自定义回调函数
+                            eb.callback(eb.afterActionCallback,eb.delayAfter);
+                            //调用插件
+                            var pluginOpts = {
+                                type : 'after',
+                                targetIndex : targetIndex
+                            };
+                            eb.plugin(pluginOpts);
+                            //设置请求标志位允许
+                            eb.actionAble = true;
+                            //动画完成，设置图片指针
+                            eb.preImg = eb.curImg;
+                            eb.curImg = targetIndex;
+                        }
+                    });
+                });
             }
         },
         changeAction : function(opts){
@@ -470,6 +506,10 @@
                     break;
                 case 'slide':
                     this.action(targetIndex);
+                    break;
+                case 'film':
+                    this.action(targetIndex);
+                    break;
             }
         },
 
