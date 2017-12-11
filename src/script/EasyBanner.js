@@ -202,10 +202,8 @@
          * @param {btn} 切换焦点
          */
         this.btn = opts.btn || false;
-        // this.smallImg = opts.smallImg || false;
-        // this.timeLine = opts.timeLine || false;
-        //杂项
-        // this.waterMark = opts.waterMark || false;
+
+        
         this.init();//initialize
 
     }
