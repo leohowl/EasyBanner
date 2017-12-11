@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>订制轮播</title>
+	<meta charset="utf-8">
+</head>
+<link rel="stylesheet" href="../src/style/style.css">
+<script type="text/javascript" src="../src/script/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="../src/script/jquery.easing.min.js"></script>
+<body>
+
+<div id="main">
+	<div class="main" id="main1"></div>
+	<div class="main" id="main2"></div>
+	<div class="main" id="main3"></div>
+    <div class="prev"><</div>
+    <div class="next">></div>
+</div>
+<div class="mainBtn1">
+    <div class="btn1"></div>
+    <div class="btn1"></div>
+    <div class="btn1"></div>
+</div>
+<div id="maina">
+    <div class="main" id="maina1"></div>
+    <div class="main" id="maina2"></div>
+    <div class="main" id="maina3"></div>
+    <div class="clear"></div>
+</div>
+<div class="mainBtna1">
+    <div class="btna1"></div>
+    <div class="btna1"></div>
+    <div class="btna1"></div>
+</div>
+
+<div id="mainb">
+    <div class="main" id="mainb1"></div>
+    <div class="main" id="mainb2"></div>
+    <div class="main" id="mainb3"></div>
+    <div class="clear"></div>
+</div>
+<div class="mainBtnb1">
+    <div class="btnb1"></div>
+    <div class="btnb1"></div>
+    <div class="btnb1"></div>
+</div>
+<script type="text/javascript" src="../src/script/EasyBanner.js"></script>
+<script type="text/javascript">
+
+    var banner3 = new EasyBanner({
+        wrap:'#mainb',
+        img:'.main',
+        method:'slide',
+        displacement:0.5,
+        direction:'left',
+        btn:'.btnb1',
+        mode : 'passive'//开启被动模式后，被控制,将不会初始化点击事件
+    });
+
+    var banner2 = new EasyBanner({
+        wrap:'#maina',
+        img:'.main',
+        method:'slide',
+        displacement:1,
+        direction:'right',
+        btn:'.btna1',
+        easing:'easeInOutQuint',
+        mode : 'passive'//开启被动模式后，被控制,将不会初始化点击事件
+    });
+
+    var banner1 = new EasyBanner({
+        wrap:'#main',
+        img:'.main',
+        btn:'.btn1',
+        method:'film',
+        leftArrow:'.prev',
+        easing:'easeInOutQuint',
+        rightArrow:'.next',
+        interval:3000,
+        control:[{
+            object: banner2,//控制对象
+            delay : 500//执行延时
+        },{
+            object: banner3,//控制对象
+            delay : 100//执行延时
+        }],//被作为控制机使用,在作为控制机使用的时候需要在从机的下方，因为在上方的时候从机还没有定义，会出现未定义错误
+        waterMark:true
+    });
+
+</script>
+</body>
+</html>
