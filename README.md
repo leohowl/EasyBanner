@@ -1,16 +1,17 @@
 EasyBanner
 =
-####简介：
+简介：
+
 
 EasyBanner是一个能够满足大部分网页轮播或类似轮播需求的插件，它是基于jQuery的。
 这个轮播插件的意义在于：只要你按照插件的语法构建DOM，并进行一些简短的、必要的引用就可以实现一个轮播的功能，当然通过一些额外的设置，他还可以完成一些其他类似轮播的功能。
 
-####使用方法
+###使用方法
 
 基础应用：
 创建一个基础的轮播。
 
-######准备DOM：
+**准备DOM：**
 ```
 <div id="main">
     <div class="main" id="main1"></div>
@@ -25,14 +26,14 @@ position:relative;
 ```
 当然，你不需要在层叠样式表中体现出来，因为插件在成初始化后会设置这些属性，但是你需要知道这些变化，因为这可能会影响你的布局。
 
-######引入插件：
+**引入插件：**
 ```
 <script type="text/javascript" src="path/jquery-1.9.1.min.js"></script>
 <script type="text/javascript" src="path/EasyBanner.js"></script>
 ```
 由于插件是基于jQuery，虽然它不是一个jQuery插件，但是还是需要引入jQuery。
 
-######创建实例：
+**创建实例：**
 ```
 <script type="text/javascript">
 var banner = new EasyBanner({
@@ -44,7 +45,7 @@ var banner = new EasyBanner({
 是的，就只要这样就好了。EasyBanner中预设了大部分的参数，使你在不用额外配置的情况下也可以使用。
 
 
-######更多设置
+**更多设置**
 
 但是，这是预设的参数无法满足我们需求，我们可通过重写参数来把轮播设置成我们想要的样子。
 ```
@@ -80,7 +81,7 @@ var banner = new EasyBanner({
 通过上面的设置我们几乎可以做一个理想的轮播图，但是不足的是没有那么多的切换效果供我们选择，但这并不是这个插件的使命。
 
 
-######更多功能
+**更多功能**
 
 也许你已经发现上面的设置中有的设置选项看上去不知所云。它们是为一些扩展功能准备的。
 ```
@@ -91,7 +92,7 @@ control
 当对轮播添加此项设置后，这个轮播图片将会被作为控制机，控制其他轮播跟随自己进行切换。我们暂且把被控制的轮播称为子机。control选项的设置在上面的参数介绍中已经提到，需要注意的是子机的mode设置为passive时，才能真正进行工作。
 
 
-######举例说明：
+**举例说明：**
 
 ```
 var banner2 = new EasyBanner({
@@ -117,7 +118,7 @@ var banner2 = new EasyBanner({
 上面的例子中，实例banner1被设置为控制机，banner2被设置为子机。banner2将跟随banner1的节奏进行切换。需要注意的是作为控制机的banner1必须在banner2的下方，否则banner1的control选项中的object会出现未定义的错误，这是显而易见的。同时，作为子机的banner2的焦点按钮和翻页按钮将会失效。
 
 
-####回调函数
+###回调函数
 
 ```
 
