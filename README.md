@@ -1,6 +1,6 @@
 EasyBanner
--
-简介：
+=
+### 简介：
 
 
 EasyBanner是一个能够满足大部分网页轮播或类似轮播需求的插件，它是基于jQuery的。
