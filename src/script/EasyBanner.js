@@ -312,7 +312,6 @@
             });
         },
         filmPositionInit: function(){
-            // console.log('film');
             //film mode
             if(this.method !== 'film'){
                 console.error('error method');
@@ -545,7 +544,7 @@
          * @param index 切换的目标图片
          * @param type 当前控制模式
          */
-        jump : function(index,type){
+        jump : function( index, type ){
             //type的类型：click来自鼠标点击，control来自控制机。
             if(type === 'control' && this.mode !== 'passive'){
                 //表示当前为控制机操作，若没有启用被动模式则不执行，控制机误操作防止
@@ -570,15 +569,16 @@
                     break;
             }
         },
-        callback : function(c,delay){
+        callback : function(c, delay){
             delay = delay || 0;
             if( typeof c === 'function'){
                 var t_callback = setTimeout(function () {
                     c();
-                },delay);
+                }, delay);
             }
         }
     };
-    window.EB = EasyBanner;
-    window.EasyBanner = window.EB;
-})(window);
+
+    window.EasyBanner = EasyBanner;
+
+})( window );
