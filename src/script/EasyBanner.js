@@ -379,7 +379,7 @@
             if(this.mode === 'auto'){
                 //如果当前为自动模式，则自动切换
                 var eb = this;
-                this.timer_autoClick = setTimeout(function(){eb.next();},this.interval);
+                this.timer_autoClick = setTimeout(function(){eb.next();}, this.interval);
             }
 
             var i = 1;
@@ -387,7 +387,7 @@
                 eb.img.eq(eb.curImg).fadeOut(eb.speed);
                 eb.img.eq(targetIndex).fadeIn(eb.speed,function(){
                     //自定义回调函数
-                    eb.callback(eb.afterActionCallback,eb.delayAfter);
+                    eb.callback(eb.afterActionCallback, eb.delayAfter);
                     //调用插件
                     var pluginOpts = {
                         type : 'after',
@@ -415,7 +415,7 @@
                         'z-index':101
                     });
                     //自定义回调函数
-                    eb.callback(eb.afterActionCallback,eb.delayAfter);
+                    eb.callback(eb.afterActionCallback, eb.delayAfter);
                     //调用插件
                     var pluginOpts = {
                         type : 'after',
@@ -441,7 +441,7 @@
                     }, eb.speed, eb.easing, function(){
                         if(index === eb.imgNum - 1){
                             //自定义回调函数
-                            eb.callback(eb.afterActionCallback,eb.delayAfter);
+                            eb.callback(eb.afterActionCallback, eb.delayAfter);
                             //调用插件
                             var pluginOpts = {
                                 type : 'after',
@@ -488,7 +488,7 @@
                     var run = function(i){
                         var obj = eb.control[i].object;
                         var delay = eb.control[i].delay;
-                        var t_mode = setTimeout(function(){obj.jump(targetIndex,'control');},delay);//control 表示是由控制机控制
+                        var t_mode = setTimeout(function(){obj.jump(targetIndex, 'control');}, delay);//control 表示是由控制机控制
                     };
                     run(i);
                 }
@@ -572,7 +572,7 @@
         callback : function(c, delay){
             delay = delay || 0;
             if( typeof c === 'function'){
-                var t_callback = setTimeout(function () {
+                var t_callback = setTimeout(function() {
                     c();
                 }, delay);
             }
