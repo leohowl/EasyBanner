@@ -209,7 +209,8 @@
     }
 
     EasyBanner.prototype = {
-        constructor : EasyBanner,
+
+        constructor : 'EasyBanner',
 
         init : function(){
             //show Author
@@ -334,7 +335,7 @@
             /**
              * 焦点初始化，在被动模式下，不会初始化翻页，不会为按钮绑定点击事件
              * @type {EasyBanner}
-             */
+        */
             var eb = this;
             if(this.btn){
                 $(this.btn).removeClass('EasyBannerBtnActive');
@@ -360,11 +361,12 @@
                 })
             }
         },
-        action : function(targetIndex){
-            var currentIndex = this.curImg;
+        action : function( targetIndex ){
             //设置banner的active
             this.img.removeClass('EasyBannerActive');
+
             this.img.eq(targetIndex).addClass('EasyBannerActive');
+
             switch (this.method){
                 case "fade":
                     fade(this);
@@ -379,12 +381,14 @@
             if(this.mode === 'auto'){
                 //如果当前为自动模式，则自动切换
                 var eb = this;
+
                 this.timer_autoClick = setTimeout(function(){eb.next();}, this.interval);
             }
 
-            var i = 1;
             function fade(eb){
+
                 eb.img.eq(eb.curImg).fadeOut(eb.speed);
+
                 eb.img.eq(targetIndex).fadeIn(eb.speed,function(){
                     //自定义回调函数
                     eb.callback(eb.afterActionCallback, eb.delayAfter);
@@ -402,8 +406,11 @@
                 });
 
             }
+
             function slide(eb){
+
                 eb.img.eq(eb.curImg).css('z-index', '100');
+
                 eb.img.eq(eb.curImg).animate({
                     left: -eb.initLeft*eb.displacement,
                     top: -eb.initTop*eb.displacement
@@ -433,8 +440,8 @@
                     top: 0}, eb.speed, eb.easing
                 );
             }
-            function film(eb){
 
+            function film(eb){
                 eb.img.each(function(index){
                     eb.img.eq(index).animate({
                         left: (index - targetIndex)*eb.wrapWidth + 'px'
@@ -502,18 +509,7 @@
                 targetIndex : targetIndex
             });
 
-            //选择动作方法
-            switch (this.method){
-                case 'fade':
-                    this.action(targetIndex);
-                    break;
-                case 'slide':
-                    this.action(targetIndex);
-                    break;
-                case 'film':
-                    this.action(targetIndex);
-                    break;
-            }
+            this.action(targetIndex);
         },
 
         /**
@@ -572,7 +568,7 @@
         callback : function(c, delay){
             delay = delay || 0;
             if( typeof c === 'function'){
-                var t_callback = setTimeout(function() {
+                var t_callback = setTimeout(function () {
                     c();
                 }, delay);
             }

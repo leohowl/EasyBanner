@@ -1,0 +1,50 @@
+#main, #maina, #mainb{ width: 800px; height: 300px; margin: 50px auto 0; position: relative; overflow: hidden; }
+.main, .maina, .mainb{ width: 800px; height: 300px; position: absolute; top: 0;left: 0; }
+#main1, #maina1, #mainb1{ background: url('../images/1.jpg') no-repeat; background-size: cover; }
+#main2, #maina2, #mainb2{ background: url('../images/2.jpg') no-repeat; background-size: cover; }
+#main3, #maina3, #mainb3{ background: url('../images/3.jpg') no-repeat; background-size: cover; }
+.mainBtn1, .mainBtna1, .mainBtnb1{
+    width: 200px;
+    text-align: center;
+
+    margin: 20px auto 0;
+}
+.btn1, .btna1, .btnb1{
+    width: 15px;
+    height: 15px;
+    background: #ccc;
+    border-radius: 15px;
+    cursor: pointer;
+    float: left;
+    margin: 0 20px;
+    transition: background 0.5s;
+}
+.btn1.EasyBannerBtnActive, .btna1.EasyBannerBtnActive, .btnb1.EasyBannerBtnActive{
+    background: #000;
+}
+.prev{
+    display: inline-block;
+    padding: 5px 15px;
+    background: rgba(0,0,0,0.5);
+    position: absolute;
+    color: #fff;
+    font-size: 18px;
+    cursor: pointer;
+    border-radius: 3px;
+    left: 10px;
+    top: 150px;
+    z-index: 999;
+}
+.next{
+    display: inline-block;
+    padding: 5px 15px;
+    background: rgba(0,0,0,0.5);
+    position: absolute;
+    right: 10px;
+    color: #fff;
+    font-size: 18px;
+    cursor: pointer;
+    border-radius: 3px;
+    top: 150px;
+    z-index: 999;
+}
