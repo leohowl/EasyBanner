@@ -96,6 +96,13 @@
         this.displacement = opts.displacement || 0;
 
         /**
+         * @param {touch} touch驱动
+         */
+        this.touch = opts.touch||false;
+
+        this.touchManager = null;
+
+        /**
          *
          * @param {preImg} 上一个显示的元素的index
          */
@@ -261,6 +268,24 @@
             if(this.mode === 'auto'){
                 //当前为自动；轮播模式
                 this.timer_autoClick = setTimeout(function(){eb.next();},this.interval);
+            }
+
+            if(this.touch){
+                this.touchManager = new Hammer.Manager(this.img);
+                this.touchManager.add(new Hammer.Swipe());
+                var deltaX = 0;
+                var deltaY = 0;
+
+                this.touchManager.on('swipe', function(e) {
+                    deltaX = deltaX + e.deltaX;
+                    var direction = e.offsetDirection;
+                    var translate3d = 'translate3d(' + deltaX + 'px, 0, 0)';
+
+                    if (direction === 4 || direction === 2) {
+                        e.target.innerText = deltaX;
+                        e.target.style.transform = translate3d;
+                    }
+                });
             }
 
         },

@@ -45,6 +45,7 @@
     <div class="btnb1"></div>
 </div>
 <script type="text/javascript" src="../src/script/EasyBanner.js"></script>
+<script type="text/javascript" src="../src/script/hammer.min.js"></script>
 <script type="text/javascript">
 
     var banner3 = new EasyBanner({
@@ -79,6 +80,7 @@
         easing:'easeInOutQuint',
         rightArrow:'.next',
         interval:3000,
+        touch:true,
         //被作为控制机使用,在作为控制机使用的时候需要在从机的下方，因为在上方的时候从机还没有定义，会出现未定义错误
         control:[
             {
