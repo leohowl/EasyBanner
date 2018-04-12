@@ -150,11 +150,25 @@
          */
         this.initLeft = 0;
 
+
         /**
          *
          * @param {initLeft} 子元素初始化位置信息
          */
         this.initTop = 0;
+
+        /**
+         *@param{realLeft} 子元素执行位置信息
+         *
+         */
+        this.realLeft = 0;
+
+        /**
+         *@param{realTop} 子元素执行位置信息
+         *
+         */
+        this.realTop = 0;
+
 
         /**
          *
@@ -203,6 +217,11 @@
          * @param {arrow} 切换按钮设置完全验证
          */
         this.arrow = !!(opts.leftArrow && opts.rightArrow);
+
+        /**
+         * @param {touchDirection}手势控制方向
+         */
+        this.touchDirection = null;
 
         /**
          *
@@ -337,12 +356,42 @@
                 top: 0
             });
         },
-        filmPositionInit: function(){
-            //film mode
-            if(this.method !== 'film'){
-                console.error('error method');
+        touchMovePositionInit : function(){
+            if(!this.touchDirection){
                 return false;
             }
+            this.realLeft = 0;
+            this.realTop = 0;
+            switch (this.touchDirection){
+                case 'left':
+                    this.realLeft = -this.wrapWidth;
+                    this.realTop = 0;
+                    break;
+                case 'right':
+                    this.realLeft = -this.wrapWidth;
+                    this.realTop = 0;
+                    break;
+                case 'top':
+                    this.realLeft = 0;
+                    this.realTop = -this.wrapHeight;
+                    break;
+                case 'bottom':
+                    this.realLeft = 0;
+                    this.realTop = this.wrapHeight;
+                    break;
+                default:
+                    this.realLeft = this.initLeft;
+                    this.realTop = this.initTop;
+                    break;
+            }
+            this.img.eq(this.targetIndex).css({
+                left:this.realLeft+'px',
+                top:this.realTop+'px'
+            });
+
+        },
+        filmPositionInit: function(){
+            //film mode
             var eb = this;
             var activeIndex = 0;
             //定位
@@ -437,13 +486,13 @@
                 eb.img.eq(eb.curImg).css('z-index', '100');
 
                 eb.img.eq(eb.curImg).animate({
-                    left: -eb.initLeft*eb.displacement,
-                    top: -eb.initTop*eb.displacement
+                    left: -eb.realLeft*eb.displacement,
+                    top: -eb.realTop*eb.displacement
                 },eb.speed,eb.easing,function(){
                     //退场图片样式
                     $(this).css({
-                        left: eb.initLeft,
-                        top: eb.initTop,
+                        left: eb.realLeft,
+                        top: eb.realTop,
                         'z-index':101
                     });
                     //自定义回调函数
@@ -525,6 +574,11 @@
                     run(i);
                 }
             }
+            //对slide模式下手动控制轮播的图片进行位置调整
+            if(this.method === 'slide'){
+                this.touchMovePositionInit();
+            }
+
             //执行前执行回调函数
             this.callback(this.beforeActionCallback, this.delayBefore);
 
@@ -535,6 +589,9 @@
             });
 
             this.action(targetIndex);
+
+            //清除手势方向
+            this.touchDirection = null;
         },
 
         /**
@@ -542,6 +599,7 @@
          */
         next : function(){
             //被动模式中，亦不可通过调用方法翻页
+            this.touchDirection = 'right';
             if(this.mode !== 'passive'){
                 this.changeAction({
                     targetIndex : (this.curImg + 1) % this.imgNum
@@ -553,6 +611,7 @@
          * 上一张，使当前的curImg减少1，然后调用图片切换
          */
         prev : function(){
+            this.touchDirection = 'left';
             if(this.mode !== 'passive'){
                 this.changeAction({
                     targetIndex : (this.curImg - 1 + this.imgNum) % this.imgNum
@@ -592,9 +651,10 @@
         },
         callback : function(c, delay){
             delay = delay || 0;
+            var that = this;
             if( typeof c === 'function'){
                 var t_callback = setTimeout(function () {
-                    c();
+                    c(that);
                 }, delay);
             }
         }
