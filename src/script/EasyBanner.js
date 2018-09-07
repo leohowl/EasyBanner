@@ -338,7 +338,8 @@
                 $(this).css({
                     left: eb.initLeft+'px',
                     top: eb.initTop+'px',
-                    'z-index' : 101
+                    'z-index' : 101,
+                    display: 'block'
                 });
             });
             //初次位置初始化检查
